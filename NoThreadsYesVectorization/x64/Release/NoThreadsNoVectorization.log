@@ -1,0 +1,8 @@
+﻿  cl : warning della riga di comando D9002 : l'opzione sconosciuta '/arch:IA32' verrà ignorata
+  main.cpp
+  Generazione codice in corso...
+  2 of 2 functions (100.0%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Generazione codice terminata
+  NoThreadsNoVectorization.vcxproj -> C:\Users\Raff\Source\Repos\VectorizationComparison\x64\Release\NoThreadsNoVectorization.exe
