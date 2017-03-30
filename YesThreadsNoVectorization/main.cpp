@@ -6,48 +6,28 @@
 
 using namespace std;
 
-void matrixComputationWorker(float **A, float **B, int size)
+void matrixComputationWorker(float *A, float *B, float *C, int size)
 {
-	#pragma loop(no_vector)
-	for (int i = 0; i < 10; i++)
+#pragma novector
+	for (int i = 0; i < size; i++)
 	{
-		#pragma loop(no_vector)
-		for (int i = 0; i < size; i++)
-		{
-			#pragma loop(no_vector)
-			for (int j = 0; j < size; j++)
-			{
-				A[i][j] += B[i][j];
-			}
-		}
+		C[i] = (A[i] + B[i])*(A[i] - B[i]);
 	}
 }
 
-void matrixComputation(float **A, float **B, int size)
+void matrixComputation(float *A, float *B, float *C, int size)
 {
-	thread t1(matrixComputationWorker, A, B, size / 2);
-	thread t2(matrixComputationWorker, A + size / 2, B, size / 2);
-	thread t3(matrixComputationWorker, A, B + size / 2, size / 2);
-	thread t4(matrixComputationWorker, A + size / 2, B + size / 2, size / 2);
+	int workerSize = size / 4;
+
+	thread t1(matrixComputationWorker, A, B, C, workerSize);
+	thread t2(matrixComputationWorker, A + workerSize, B + workerSize, C + workerSize, workerSize);
+	thread t3(matrixComputationWorker, A + 2*workerSize, B + 2*workerSize, C + 2*workerSize, workerSize);
+	thread t4(matrixComputationWorker, A + 3*workerSize, B + 3*workerSize, C + 3*workerSize, workerSize);
 
 	t1.join();
 	t2.join();
 	t3.join();
 	t4.join();
-}
-
-void printMat(float** A, int size)
-{
-	ofstream mat("mat_yTnV.txt");
-	mat.clear();
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
-		{
-			mat << A[i][j];
-		}
-	}
-	mat.close();
 }
 
 double mean(vector<double> results)
@@ -85,21 +65,18 @@ int main(int argc, char* argv[])
 	if (argc < 2)
 		return 1;
 
-	int size = atoi(argv[1]);
+	size_t size = atoi(argv[1]);
+	size_t align = 32;
 
-	float **A = new float*[size];
-	float **B = new float*[size];
+	float *A = (float*)_mm_malloc(size * sizeof(float), align);
+	float *B = (float*)_mm_malloc(size * sizeof(float), align);
+	float *C = (float*)_mm_malloc(size * sizeof(float), align);
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size; ++i)
 	{
-		A[i] = new float[size];
-		B[i] = new float[size];
-
-		for (int j = 0; j < size; j++)
-		{
-			A[i][j] = rand() * (float)(1 << 15);
-			B[i][j] = rand() * (float)(1 << 15);
-		}
+		A[i] = rand() * (float)(1 << 15);
+		B[i] = rand() * (float)(1 << 15);
+		C[i] = rand() * (float)(1 << 15);
 	}
 
 	ofstream txt("results_yTnV.txt");
@@ -110,7 +87,7 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < tests; i++)
 	{
 		clock_t start = clock();
-		matrixComputation(A, B, size);
+		matrixComputation(A, B, C, size);
 		double duration = (clock() - start) / ((double)CLOCKS_PER_SEC);
 
 		results.push_back(duration);
@@ -123,5 +100,4 @@ int main(int argc, char* argv[])
 		txt << value << endl;
 	}
 	txt.close();
-	//printMat(A, size);
 }

@@ -2,35 +2,17 @@
 #include <ctime>
 #include <vector>
 #include <fstream>
+#include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
-void matrixComputation(float **A, float **B, int size)
+void matrixComputation(float *A, float *B, float *C, int size)
 {
 	for (int i = 0; i < size; i++)
 	{
-		for (int j = 0; j < size; j++)
-		{
-			for (int i = 0; i < 10; i++)
-			{
-				A[i][j] += B[i][j];
-			}
-		}
+		C[i] = (A[i] + B[i])*(A[i] - B[i]);
 	}
-}
-
-void printMat(float** A, int size)
-{
-	ofstream mat("mat_nTyV.txt");
-	mat.clear();
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
-		{
-			mat << A[i][j];
-		}
-	}
-	mat.close();
 }
 
 double mean(vector<double> results)
@@ -68,21 +50,18 @@ int main(int argc, char* argv[])
 	if (argc < 2)
 		return 1;
 
-	int size = atoi(argv[1]);
+	size_t size = atoi(argv[1]);
+	size_t align = 32;
 
-	float **A = new float*[size];
-	float **B = new float*[size];
-
-	for (int i = 0; i < size; i++)
+	float *A = (float*)_mm_malloc(size * sizeof(float), align);
+	float *B = (float*)_mm_malloc(size * sizeof(float), align);
+	float *C = (float*)_mm_malloc(size * sizeof(float), align);
+	
+	for (int i = 0; i < size; ++i)
 	{
-		A[i] = new float[size];
-		B[i] = new float[size];
-
-		for (int j = 0; j < size; j++)
-		{
-			A[i][j] = rand() * (float)(1 << 15);
-			B[i][j] = rand() * (float)(1 << 15);
-		}
+		A[i] = rand() * (float)(1 << 15);
+		B[i] = rand() * (float)(1 << 15);
+		C[i] = rand() * (float)(1 << 15);
 	}
 
 	ofstream txt("results_nTyV.txt");
@@ -93,7 +72,7 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < tests; i++)
 	{
 		clock_t start = clock();
-		matrixComputation(A, B, size);
+		matrixComputation(A, B, C, size);
 		double duration = (clock() - start) / ((double)CLOCKS_PER_SEC);
 
 		results.push_back(duration);
@@ -106,5 +85,4 @@ int main(int argc, char* argv[])
 		txt << value << endl;
 	}
 	txt.close();
-	//printMat(A, size);
 }
