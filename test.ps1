@@ -1,18 +1,18 @@
 $prevCD = pwd
 cd x64/Release
 
-$size = 3e4
+$repetitions = 1e3
 
 Write-Host "Starting nTnV"
-./NoThreadsNoVectorization.exe $size
+./NoThreadsNoVectorization.exe $repetitions
 
 Write-Host "Starting nTyV"
-./NoThreadsYesVectorization.exe $size
+./NoThreadsYesVectorization.exe $repetitions
 
 Write-Host "Starting yTnV"
-./YesThreadsNoVectorization.exe $size
+./YesThreadsNoVectorization.exe $repetitions
 
 Write-Host "Starting yTyV"
-./YesThreadsYesVectorization.exe $size
+./YesThreadsYesVectorization.exe $repetitions
 
 cd $prevCD

@@ -50,13 +50,14 @@ int main(int argc, char* argv[])
 	if (argc < 2)
 		return 1;
 
-	size_t size = atoi(argv[1]);
+	size_t reps = atoi(argv[1]);
+	size_t size = 8 * 100000;
 	size_t align = 32;
 
 	float *A = (float*)_mm_malloc(size * sizeof(float), align);
 	float *B = (float*)_mm_malloc(size * sizeof(float), align);
 	float *C = (float*)_mm_malloc(size * sizeof(float), align);
-	
+
 	for (int i = 0; i < size; ++i)
 	{
 		A[i] = rand() * (float)(1 << 15);
@@ -66,13 +67,16 @@ int main(int argc, char* argv[])
 
 	ofstream txt("results_nTyV.txt");
 	txt.clear();
-	int tests = 40;
+	int tests = 60;
 	vector<double> results;
 
 	for (int i = 0; i < tests; i++)
 	{
 		clock_t start = clock();
-		matrixComputation(A, B, C, size);
+		for (int j = 0; j < reps; ++j)
+		{
+			matrixComputation(A, B, C, size);
+		}
 		double duration = (clock() - start) / ((double)CLOCKS_PER_SEC);
 
 		results.push_back(duration);
