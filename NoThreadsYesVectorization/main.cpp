@@ -52,7 +52,7 @@ double ci(vector<double> results)
 int main(int argc, char* argv[])
 {
 	if (argc < 2)
-		return;
+		return 1;
 
 	int size = atoi(argv[1]);
 
