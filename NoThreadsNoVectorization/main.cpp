@@ -22,6 +22,20 @@ void matrixComputation(float **A, float **B, int size)
 	}
 }
 
+void printMat(float** A, int size)
+{
+	ofstream mat("mat_nTnV.txt");
+	mat.clear();
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			mat << A[i][j];
+		}
+	}
+	mat.close();
+}
+
 double mean(vector<double> results)
 {
 	double sum = 0;
@@ -94,4 +108,6 @@ int main(int argc, char* argv[])
 	{
 		txt << value << endl;
 	}
+	txt.close();
+	//printMat(A, size);
 }

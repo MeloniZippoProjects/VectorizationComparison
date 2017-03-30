@@ -7,16 +7,30 @@ using namespace std;
 
 void matrixComputation(float **A, float **B, int size)
 {
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < size; i++)
 	{
-		for (int i = 0; i < size; i++)
+		for (int j = 0; j < size; j++)
 		{
-			for (int j = 0; j < size; j++)
+			for (int i = 0; i < 10; i++)
 			{
 				A[i][j] += B[i][j];
 			}
 		}
-	}	
+	}
+}
+
+void printMat(float** A, int size)
+{
+	ofstream mat("mat_nTyV.txt");
+	mat.clear();
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			mat << A[i][j];
+		}
+	}
+	mat.close();
 }
 
 double mean(vector<double> results)
@@ -91,4 +105,6 @@ int main(int argc, char* argv[])
 	{
 		txt << value << endl;
 	}
+	txt.close();
+	//printMat(A, size);
 }
