@@ -54,6 +54,9 @@ double ci(vector<double> results)
 
 int main(int argc, char* argv[])
 {
+	if (argc < 2)
+		return;
+
 	int size = atoi(argv[1]);
 
 	float **A = new float*[size];
@@ -91,4 +94,21 @@ int main(int argc, char* argv[])
 	{
 		txt << value << endl;
 	}
+
+	ofstream mat("matA.txt");
+	txt.clear();
+
+	for (int i = 0; i < 10; i++)
+	{
+		#pragma loop(no_vector)
+		for (int i = 0; i < size; i++)
+		{
+			#pragma loop(no_vector)
+			for (int j = 0; j < size; j++)
+			{
+				A[i][j] += B[i][j];
+			}
+		}
+	}
+
 }
