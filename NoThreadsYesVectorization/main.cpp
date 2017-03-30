@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <ctime>
-
+#include <vector>
 #include <fstream>
 
 using namespace std;
@@ -17,6 +17,36 @@ void matrixComputation(float **A, float **B, int size)
 			}
 		}
 	}	
+}
+
+double mean(vector<double> results)
+{
+	double sum = 0;
+	for (double v : results)
+	{
+		sum += v;
+	}
+	return sum / results.size();
+}
+
+double sampleStdDeviation(vector<double> results)
+{
+	double m = mean(results);
+	double sampleVariance = 0;
+
+	for (int i = 0; i < (results.size() - 1); i++)
+	{
+		double diff = results[i] - m;
+		sampleVariance += diff * diff;
+	}
+
+	sampleVariance /= (results.size() - 1);
+	return sqrt(sampleVariance);
+}
+
+double ci(vector<double> results)
+{
+	return 1.96 * (sampleStdDeviation(results) / sqrt(results.size()));
 }
 
 int main(int argc, char* argv[])
@@ -39,18 +69,23 @@ int main(int argc, char* argv[])
 	}
 
 	ofstream txt("results_nTyV.txt");
-	double total_time = 0;
-	int times = 15;
-	
-	for (int i = 0; i < times; i++)
+	txt.clear();
+	int tests = 40;
+	vector<double> results;
+
+	for (int i = 0; i < tests; i++)
 	{
 		clock_t start = clock();
 		matrixComputation(A, B, size);
 		double duration = (clock() - start) / ((double)CLOCKS_PER_SEC);
-		total_time += duration;
-		
-		txt << duration << endl;
-	}	
 
-	txt << endl << "Mean: " << total_time / times << endl;
+		results.push_back(duration);
+	}
+
+	txt << "Mean: " << mean(results) << " +- " << ci(results) << endl;
+	txt << endl;
+	for (double value : results)
+	{
+		txt << value << endl;
+	}
 }

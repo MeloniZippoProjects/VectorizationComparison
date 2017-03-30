@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NoThreadsNoVectorization", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NoThreadsYesVectorization", "NoThreadsYesVectorization\NoThreadsYesVectorization.vcxproj", "{70EA90C0-6D99-44BC-88E6-54B292BACF12}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YesThreadNoVectorization", "YesThreadNoVectorization\YesThreadNoVectorization.vcxproj", "{DDEF7311-8A6A-414E-87CD-9327AF0550CE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YesThreadsNoVectorization", "YesThreadsNoVectorization\YesThreadsNoVectorization.vcxproj", "{DDEF7311-8A6A-414E-87CD-9327AF0550CE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YesThreadsYesVectorization", "YesThreadsYesVectorization\YesThreadsYesVectorization.vcxproj", "{2F62AAEB-6364-416E-AC3D-EC811FABD5CE}"
 EndProject

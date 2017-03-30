@@ -1,4 +1,0 @@
-﻿  cl : warning della riga di comando D9002 : l'opzione sconosciuta '/arch:IA32' verrà ignorata
-  main.cpp
-  NoThreadsNoVectorization.vcxproj -> C:\Users\Raff\Source\Repos\VectorizationComparison\x64\Debug\NoThreadsNoVectorization.exe
-  NoThreadsNoVectorization.vcxproj -> C:\Users\Raff\Source\Repos\VectorizationComparison\x64\Debug\NoThreadsNoVectorization.pdb (Partial PDB)
