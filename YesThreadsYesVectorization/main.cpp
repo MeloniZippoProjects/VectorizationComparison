@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <thread>
+#include <windows.h>
 
 using namespace std;
 
@@ -65,7 +66,7 @@ int main(int argc, char* argv[])
 		return 1;
 
 	size_t reps = atoi(argv[1]);
-	size_t size = 8 * 100000;
+	size_t size = 8 * 25000;
 	size_t align = 32;
 
 	float *A = (float*)_mm_malloc(size * sizeof(float), align);
@@ -81,7 +82,7 @@ int main(int argc, char* argv[])
 
 	ofstream txt("results_yTyV.txt");
 	txt.clear();
-	int tests = 60;
+	int tests = 150;
 	vector<double> results;
 
 	for (int i = 0; i < tests; i++)
@@ -94,6 +95,7 @@ int main(int argc, char* argv[])
 		double duration = (clock() - start) / ((double)CLOCKS_PER_SEC);
 
 		results.push_back(duration);
+		Sleep(50);
 	}
 
 	txt << "Mean: " << mean(results) << " +- " << ci(results) << endl;

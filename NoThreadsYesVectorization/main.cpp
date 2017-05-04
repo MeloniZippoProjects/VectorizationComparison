@@ -4,11 +4,13 @@
 #include <fstream>
 #include <iostream>
 #include <stdlib.h>
+#include <windows.h>
 
 using namespace std;
 
 void matrixComputation(float *A, float *B, float *C, int size)
 {
+#pragma vector aligned
 	for (int i = 0; i < size; i++)
 	{
 		C[i] = (A[i] + B[i])*(A[i] - B[i]);
@@ -51,7 +53,7 @@ int main(int argc, char* argv[])
 		return 1;
 
 	size_t reps = atoi(argv[1]);
-	size_t size = 8 * 100000;
+	size_t size = 8 * 25000;
 	size_t align = 32;
 
 	float *A = (float*)_mm_malloc(size * sizeof(float), align);
@@ -67,7 +69,7 @@ int main(int argc, char* argv[])
 
 	ofstream txt("results_nTyV.txt");
 	txt.clear();
-	int tests = 60;
+	int tests = 150;
 	vector<double> results;
 
 	for (int i = 0; i < tests; i++)
@@ -80,6 +82,7 @@ int main(int argc, char* argv[])
 		double duration = (clock() - start) / ((double)CLOCKS_PER_SEC);
 
 		results.push_back(duration);
+		Sleep(50);
 	}
 
 	txt << "Mean: " << mean(results) << " +- " << ci(results) << endl;
